@@ -21,6 +21,8 @@ LIBEXEC_FILES=(dirmngr_ldap gpg-preset-passphrase scdaemon gpg-check-pattern gpg
 
 export MACOSX_DEPLOYMENT_TARGET=10.12
 MACOS_MIN_VERSION="-mmacosx-version-min=10.12"
+MACOS_MIN_VERSION="-mmacosx-version-min=10.14"
+MACOS_SDK_PATH="$(xcrun --sdk macosx --show-sdk-path)"
 
 # Prepare logging.
 mkdir -p "$WORKING_DIR" "$BUILD_DIR" "$DIST_DIR" "$CACHE_DIR"
@@ -127,7 +129,7 @@ function apply_patches {
 
 function define_build_vars {
 	dest_arch="${1:-x86_64}"
-	build_cflags="${MACOS_MIN_VERSION} -ULOCALEDIR -DLOCALEDIR='\"${TARGET_DIR}/share/locale\"'"
+	build_cflags="${MACOS_MIN_VERSION} -isysroot ${MACOS_SDK_PATH} -isystem ${MACOS_SDK_PATH} -ULOCALEDIR -DLOCALEDIR='\"${TARGET_DIR}/share/locale\"'"
 	# For some reason, many configure based libraries test for aarch64 instead of arm64,
 	# so replace arm64 with aarch64.
 	build_alias="${dest_arch/arm64/aarch64}-apple-darwin"
