@@ -40,10 +40,6 @@ set -o pipefail
 # But *must* be turned on, before the function is parsed.
 shopt -s extglob
 
-if [[ "$(type -t pkg-config)" != "file" ]]; then
-	err_exit "ERROR: pkg-config is not installed. This script requires pkg-config to be available.\nPlease fix your setup and try again."
-fi
-
 # Helper functions.
 function err_exit {
 	msg="$* (${BASH_SOURCE[1]##*/}: line ${BASH_LINENO[0]})"
@@ -54,6 +50,11 @@ function err_exit {
 	fi
 	exit 1
 }
+
+if [[ "$(type -t pkg-config)" != "file" ]]; then
+	err_exit "ERROR: pkg-config is not installed. This script requires pkg-config to be available.\nPlease fix your setup and try again."
+fi
+
 function do_fail {
 	msg="\n** ERROR at $* ** - build failed (${BASH_SOURCE[1]##*/}: line ${BASH_LINENO[0]})"
 	if [[ "$HAVE_TERMINAL" == "1" ]] ;then
