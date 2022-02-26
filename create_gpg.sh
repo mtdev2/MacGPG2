@@ -23,6 +23,22 @@ export MACOSX_DEPLOYMENT_TARGET=10.14
 MACOS_MIN_VERSION="-mmacosx-version-min=10.14"
 MACOS_SDK_PATH="$(xcrun --sdk macosx --show-sdk-path)"
 
+# By default during compilation macOS picks Command Line Tools binaries 
+# (gcc, clang and others) over installed Xcode.app binaries.
+# These binaries by default use the SDK (includes the headers and libs) for the platform version
+# they are run on. SDKs for macOS < Big Sur are not able to compile
+# binaries for arm64 and such that leads to a binary which fails to run on M1 processors.
+# Example error: symbol not found in flat namespace '_BC'
+#
+# In order to make sure that always Xcode.app binaries the SDKROOT has to point
+# to the correct SDK within Xcode.app on macOS < Big Sur
+#
+# xcrun --show-sdk-path returns the path for the SDK path in case Command Line Tools
+# are installed
+#
+# xcrun --sdk macosx --show-sdk-path however returns the SDK within Xcode.app
+export SDKROOT="$MACOS_SDK_PATH"
+
 # Prepare logging.
 mkdir -p "$WORKING_DIR" "$BUILD_DIR" "$DIST_DIR" "$CACHE_DIR"
 if [[ -t 2 ]]; then
