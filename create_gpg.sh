@@ -19,8 +19,7 @@ TOOL="$1"
 BIN_FILES=(gpg gpg-agent gpg-connect-agent gpg-error gpgconf gpgparsemail gpgsm gpgsplit gpgtar gpgv kbxutil watchgnupg dirmngr-client dirmngr mpicalc dumpsexp hmac256)
 LIBEXEC_FILES=(dirmngr_ldap gpg-preset-passphrase scdaemon gpg-check-pattern gpg-protect-tool gpg-wks-client)
 
-export MACOSX_DEPLOYMENT_TARGET=10.12
-MACOS_MIN_VERSION="-mmacosx-version-min=10.12"
+export MACOSX_DEPLOYMENT_TARGET=10.14
 MACOS_MIN_VERSION="-mmacosx-version-min=10.14"
 MACOS_SDK_PATH="$(xcrun --sdk macosx --show-sdk-path)"
 
